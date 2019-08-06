@@ -1,10 +1,16 @@
 (cl:in-package :stumpwm-init)
 
-(set-prefix-key (kbd "s-C-x"))
+(set-prefix-key (kbd "s-F11"))
+
+(super-key-maps (*s-x-map* "x")
+                (*launcher-map* "l")
+                (stumpwm:*help-map* "h")
+                (stumpwm:*root-map* "t"))
 
 ;;; s-
 (s- "n" "next-frame")
 (s- "N" "move-window-next-frame")
+(s- "o" "pull-hidden-next")
 (s- "p" "previous-frame")
 (s- "P" "move-window-previous-frame")
 (s- ";" "colon")

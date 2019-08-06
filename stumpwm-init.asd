@@ -13,6 +13,5 @@
                (:file "keybinding-macros")
                (:file "swank-slime")
                (:file "frame-navigation")
-               (:file "key-maps")
                (:file "keybindings")))
 

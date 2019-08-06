@@ -10,6 +10,4 @@
                 :run-shell-command
                 :run-or-raise
                 :current-group
-                :current-window)
-  (:export :run-slime
-           :firefox))
+                :current-window))
