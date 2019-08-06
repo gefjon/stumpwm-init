@@ -7,5 +7,6 @@
                :iterate
                :stumpwm
                :swank)
+  :pathname "src/"
   :serial t
   :components ((:file "stumpwm-init")))
