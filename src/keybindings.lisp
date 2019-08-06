@@ -2,10 +2,10 @@
 
 (set-prefix-key (kbd "s-F11"))
 
-(super-key-maps (*s-x-map* "x")
-                (*launcher-map* "l")
-                (stumpwm:*help-map* "h")
-                (stumpwm:*root-map* "t"))
+(super-key-maps (*s-x-map* x)
+                (*launcher-map* l)
+                (stumpwm:*help-map* h)
+                (stumpwm:*root-map* t))
 
 ;;; s-
 (s- "n" "next-frame")
@@ -17,15 +17,15 @@
 (s- ":" "eval")
 
 ;;; s-l
-(windowed-app-launcher firefox "f")
-(windowed-app-launcher wireshark "w")
-(windowed-app-launcher spotify "p")
-(windowed-app-launcher steam "s")
-(windowed-app-launcher discord "d")
-(windowed-app-launcher emacsclient "e" :command-line-args "-c"
+(windowed-app-launcher firefox f)
+(windowed-app-launcher wireshark w)
+(windowed-app-launcher spotify p)
+(windowed-app-launcher steam s)
+(windowed-app-launcher discord d)
+(windowed-app-launcher emacsclient e :command-line-args "-c"
                                        :class "Emacs")
-(windowed-app-launcher google-chrome "c")
-(windowed-app-launcher xterm "t")
+(windowed-app-launcher google-chrome c)
+(windowed-app-launcher xterm t)
 
 ;;; s-x
 (s-x "k" "delete")
