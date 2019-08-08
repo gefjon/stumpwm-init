@@ -2,8 +2,7 @@
   (:use :cl :iterate)
   (:import-from :stumpwm
                 :kbd
-                :defcommand
-                :load-module)
+                :defcommand)
   (:export :firefox
            :previous-frame
            :wireshark

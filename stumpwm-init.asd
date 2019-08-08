@@ -10,9 +10,11 @@
   :pathname "src/"
   :serial t
   :components ((:file "package")
-               (:file "keybinding-macros")
                (:file "modules")
+               (:file "keybinding-macros")
+               (:file "colors")
                (:file "swank-slime")
+               (:file "modeline")
                (:file "frame-navigation")
                (:file "keybindings")))
 
