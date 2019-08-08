@@ -7,14 +7,23 @@
                :iterate
                :stumpwm
                :swank)
-  :pathname "src/"
-  :serial t
-  :components ((:file "package")
-               (:file "modules")
-               (:file "keybinding-macros")
-               (:file "colors")
-               (:file "swank-slime")
-               (:file "modeline")
-               (:file "frame-navigation")
-               (:file "keybindings")))
+  :components ((:file :package)
+               (:module :src
+                        :depends-on (:package)
+                        :components ((:file :modules)
+
+                                     (:file :keybinding-macros)
+
+                                     (:file :colors)
+
+                                     (:file :swank-slime)
+
+                                     (:file :modeline
+                                            :depends-on (:modules))
+
+                                     (:file :frame-navigation)
+
+                                     (:file :keybindings
+                                           :depends-on (:frame-navigation
+                                                        :keybinding-macros))))))
 
