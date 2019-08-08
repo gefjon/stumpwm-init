@@ -11,12 +11,12 @@
                          (first list))))))
 
 (defun advance-focus (&key bring-window go-backwards)
-  (let* ((group (current-group))
+  (let* ((group (stumpwm:current-group))
          (current-frame (stumpwm::tile-group-current-frame group))
          (group-frames (stumpwm::group-frames group))
          (frames-sequence (if go-backwards (reverse group-frames) group-frames))
          (new-frame (find-successor current-frame frames-sequence))
-         (window (current-window)))
+         (window (stumpwm:current-window)))
     (if bring-window (stumpwm::pull-window window new-frame)
         (stumpwm::focus-frame group new-frame))))
 

@@ -1,13 +1,18 @@
 (cl:in-package :stumpwm-init)
 
-(set-prefix-key (kbd "s-F11"))
+(stumpwm:set-prefix-key (kbd "s-F11"))
 
 (super-key-maps (*s-x-map* x)
                 (*launcher-map* l)
                 (stumpwm:*help-map* h)
-                (stumpwm:*root-map* t))
+                (stumpwm:*root-map* t)
+                (stumpwm:*groups-map* g))
 
 ;;; s-
+(s- "f" "gnext")
+(s- "F" "gnext-with-window")
+(s- "b" "gprev")
+(s- "B" "gprev-with-window")
 (s- "n" "next-frame")
 (s- "N" "move-window-next-frame")
 (s- "o" "pull-hidden-next")

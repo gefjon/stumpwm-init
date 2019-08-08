@@ -11,6 +11,7 @@
   :serial t
   :components ((:file "package")
                (:file "keybinding-macros")
+               (:file "modules")
                (:file "swank-slime")
                (:file "frame-navigation")
                (:file "keybindings")))

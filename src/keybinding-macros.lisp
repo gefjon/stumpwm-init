@@ -11,12 +11,12 @@
       (symbol (symbol-to-downcase-string key)))))
 
 (defmacro s- (key command)
-  `(define-key *top-map* (kbd ,(concatenate 'string "s-" (norm-key key)))
+  `(stumpwm:define-key stumpwm:*top-map* (kbd ,(concatenate 'string "s-" (norm-key key)))
      ,command))
 
 (defmacro super-key-maps (&rest variables-and-keys)
   (flet ((defvar-form (map-name)
-           `(defvar ,map-name (make-sparse-keymap)))
+           `(defvar ,map-name (stumpwm:make-sparse-keymap)))
          
          (top-map-binding-form (key map-name)
            `(s- ,key ,map-name))
@@ -25,7 +25,7 @@
            (let ((full-keycode  (concatenate 'string "s-" (norm-key key))))
              `(defun ,(intern (string-upcase full-keycode))
                   (key command)
-                (define-key ,map-name (kbd (norm-key key)) command)))))
+                (stumpwm:define-key ,map-name (kbd (norm-key key)) command)))))
     
     (cons 'progn
           (iterate (for (map-name key) in variables-and-keys)
@@ -49,8 +49,8 @@
                         (list define-key-form)))
          (class (or class (string-capitalize program-name)))
          (defcommand-form `(defcommand ,program () ()
-                             (run-or-raise ,command-line-command
-                                           '(:class ,class)))))
+                             (stumpwm:run-or-raise ,command-line-command
+                                                   '(:class ,class)))))
     `(progn
        ,defcommand-form
        ,@key-forms)))
