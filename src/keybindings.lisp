@@ -9,15 +9,15 @@
                 (stumpwm:*groups-map* g))
 
 ;;; s-
-(s- "f" "gnext")
-(s- "F" "gnext-with-window")
-(s- "b" "gprev")
-(s- "B" "gprev-with-window")
-(s- "n" "next-frame")
-(s- "N" "move-window-next-frame")
+(s- "n" "gnext")
+(s- "N" "gnext-with-window")
+(s- "p" "gprev")
+(s- "P" "gprev-with-window")
+(s- "f" "next-frame")
+(s- "F" "move-window-next-frame")
 (s- "o" "pull-hidden-next")
-(s- "p" "previous-frame")
-(s- "P" "move-window-previous-frame")
+(s- "b" "previous-frame")
+(s- "B" "move-window-previous-frame")
 (s- ";" "colon")
 (s- ":" "eval")
 
