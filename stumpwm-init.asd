@@ -9,21 +9,28 @@
                :swank)
   :components ((:file :package)
                (:module :src
-                        :depends-on (:package)
-                        :components ((:file :modules)
+                :depends-on (:package)
+                :components ((:file :modules)
 
-                                     (:file :keybinding-macros)
+                             (:file :keybinding-macros)
 
-                                     (:file :colors)
+                             (:file :colors)
 
-                                     (:file :swank-slime)
+                             (:file :swank-slime)
 
-                                     (:file :modeline
-                                            :depends-on (:modules))
+                             (file :theme
+                                   :depends-on (:modules))
 
-                                     (:file :frame-navigation)
+                             (:file :modeline
+                                    ;; set modeline after theme,
+                                    ;; because setting theme clobbers
+                                    ;; the modeline.
+                              :depends-on (:modules
+                                           :theme))
 
-                                     (:file :keybindings
-                                           :depends-on (:frame-navigation
-                                                        :keybinding-macros))))))
+                             (:file :frame-navigation)
+
+                             (:file :keybindings
+                              :depends-on (:frame-navigation
+                                           :keybinding-macros))))))
 

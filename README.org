@@ -1,0 +1,55 @@
+* phoebe's super sexy stumpwm config
+
+my configuration for [[https://stumpwm.github.io][stumpwm]], my window manager of choice.
+
+to install, do:
+
+#+BEGIN_SRC sh
+  git clone git@github.com:gefjon/stumpwm-init.git ~/quicklisp/local-projects/stumpwm-init
+  mkdir -p ~/.stumpwm.d
+  ln -s ~/quicklisp/local-projects/stumpwm-init/init.lisp ~/.stumpwm.d/init.lisp
+#+END_SRC
+
+** contrib
+
+to install the [[https://github.com/stumpwm/stumpwm-contrib][stumpwm contrib modules]], do:
+
+#+BEGIN_SRC sh
+  git clone git@github.com:stumpwm/stumpwm-contrib.git ~/stumpwm-contrib
+#+END_SRC
+
+** cl-base16
+i've been trying to get [[https://github.com/tpine/base16-stumpwm][stumpwm-base16]] to manage my themes, but so far i
+haven't been having much success.
+
+i began by:
+
+#+BEGIN_SRC sh
+  git clone git@github.com:/tpine/cl-base16 ~/quicklisp/local-projects/cl-base16
+  git clone git@github.com:/tpine/base16-stumpwm ~/stumpwm-contrib/base16-stumpwm
+#+END_SRC
+
+the naive thing to do would be to run the following in its own sbcl process,
+not stumpwm:
+
+#+BEGIN_SRC lisp
+  (ql:quickload :cl-base16)
+  (cl-base16:update)
+#+END_SRC
+
+unfortunately, that last function never returned, because for some reason
+~cl-base16~ just goes ahead and generates themes for, like, a million apps i
+don't use. so, interrupt ~cl-base16:update~ early in its run, and go comment
+out most of [[file:~/quicklisp/local-projects/cl-base16/sources/templates/list.yaml][the templates file]], leaving only the apps you intend to use (for
+me, ~emacs~ and ~stumpwm~). then, run ~cl-base16~ again.
+
+also, some of the [[file:~/quicklisp/local-projects/cl-base16/sources/schemes/][schemes]] are in files named ~*.yml~, but ~cl-base16~ only
+finds themes named ~*.yaml~. the laziest/stupidest way to fix this is to just
+rename any ~yml~ files to ~yaml~ manually. once that's done, eval the following
+in your stumpwm process to set a theme, or do =s-; SELECT-THEME= to choose
+interactively.
+
+#+BEGIN_SRC lisp
+  (load-module "stumpwm-base16")
+  (stumpwm-base16:load-theme "dracula")
+#+END_SRC
