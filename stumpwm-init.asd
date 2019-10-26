@@ -18,7 +18,7 @@
 
                              (:file :swank-slime)
 
-                             (file :theme
+                             (:file :theme
                                    :depends-on (:modules))
 
                              (:file :modeline

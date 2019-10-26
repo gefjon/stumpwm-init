@@ -41,7 +41,8 @@
    ~cl-base16~ just goes ahead and generates themes for, like, a million apps i
    don't use. so, interrupt ~cl-base16:update~ early in its run, and go comment
    out most of [[file:~/quicklisp/local-projects/cl-base16/sources/templates/list.yaml][the templates file]], leaving only the apps you intend to use (for
-   me, ~emacs~ and ~stumpwm~). then, run ~cl-base16~ again.
+   me, ~emacs~, ~stumpwm~ and ~xresources~). then, run ~cl-base16:update~
+   again.
 
    also, some of the [[file:~/quicklisp/local-projects/cl-base16/sources/schemes/][schemes]] are in files named ~*.yml~, but ~cl-base16~ only
    finds themes named ~*.yaml~. the laziest/stupidest way to fix this is to just
@@ -53,7 +54,20 @@
      (load-module "stumpwm-base16")
      (stumpwm-base16:load-theme "dracula")
    #+END_SRC
-
+*** setting .Xresources
+    to install a theme for xresources (observed e.g. by xterm), symlink its
+    theme file to ~~/.Xresources~, like:
+    #+BEGIN_SRC sh
+      ln -s ~/quicklisp/local-projects/cl-base16/sources/templates/xresources/xresources/base16-dracula-256.Xresources ~/.Xresources
+    #+END_SRC
+    and load it with:
+    #+BEGIN_SRC sh
+      xrdb --load ~/.Xresources
+    #+END_SRC
+    once that works, it goes into your userinit, like:
+    #+BEGIN_SRC lisp
+      (stumpwm:run-shell-command "xrdb -load ~/.Xresources")
+    #+END_SRC
 ** emacs daemon
    this config assumes an emacs daemon is running. i use the systemd service
    included in the emacs repository as emacs/etc/emacs.service. assuming you
