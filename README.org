@@ -69,21 +69,8 @@
       (stumpwm:run-shell-command "xrdb -load ~/.Xresources")
     #+END_SRC
 ** emacs daemon
-   this config assumes an emacs daemon is running. i use the systemd service
-   included in the emacs repository as emacs/etc/emacs.service. assuming you
-   have the emacs source repository cloned to ~~/emacs~, you can do:
-   #+BEGIN_SRC sh
-     mkdir -p ~/config/systemd/user
-     ln -s ~/emacs/etc/emacs.service ~/config/systemd/user
-     systemctl --user enable emacs
-     systemctl --user start emacs
-   #+END_SRC
-   i also saw some problems where systemd was spuriously restarting my emacs,
-   so i replaced
-   #+BEGIN_SRC conf
-     Restart=on-failure
-   #+END_SRC
-   to
-   #+BEGIN_SRC conf
-     Restart=no
-   #+END_SRC
+   [[file:src/emacs.lisp][emacs.lisp]] arranges to spawn an emacs daemon on startup. i have chosen this
+   route rather than running emacs under systemd because i've seen problems
+   where systemd didn't realize emacs had finished initializing and killed it
+   as a timeout. stumpwm doesn't do this, but also doesn't do anything smart
+   when the emacs server actually hangs or fails to start. oh well.

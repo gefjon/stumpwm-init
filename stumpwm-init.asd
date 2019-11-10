@@ -32,5 +32,7 @@
 
                              (:file :keybindings
                               :depends-on (:frame-navigation
-                                           :keybinding-macros))))))
+                                           :keybinding-macros))
+
+                             (:file :emacs)))))
 
