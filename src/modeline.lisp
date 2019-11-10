@@ -5,16 +5,14 @@
 
 (load-module "hostname")
 (load-module "mem")
-(load-module "wifi")
 
 (defparameter *modeline-format-string*
-  "%h | %g | %d | %I | %M | %v"
+  "%h | %M | %d | %g | %v"
   "left to right, these are:
    %h hostname (supplied by hostname)
-   %g groups (virtual desktops)
-   %d date and time
-   %I wifi link (seems broken with netplan on ubuntu 19.10; supplied by wifi)
    %M memory usage (supplied by mem)
+   %d date and time
+   %g groups (virtual desktops)
    %v windows")
 
 (stumpwm:enable-mode-line (stumpwm:current-screen)

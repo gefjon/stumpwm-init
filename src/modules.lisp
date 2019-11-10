@@ -1,7 +1,7 @@
 (cl:in-package :stumpwm-init)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (stumpwm:set-module-dir "/home/phoebe/stumpwm-contrib"))
+  (stumpwm:set-module-dir "~/stumpwm-contrib"))
 
 (defmacro load-module (module)
   `(eval-when (:compile-toplevel :load-toplevel :execute)
