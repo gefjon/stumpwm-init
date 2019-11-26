@@ -16,8 +16,6 @@
 
                              (:file :colors)
 
-                             (:file :swank-slime)
-
                              (:file :theme
                                    :depends-on (:modules))
 
@@ -34,5 +32,11 @@
                               :depends-on (:frame-navigation
                                            :keybinding-macros))
 
-                             (:file :emacs)))))
+                             (:file :daemon)
+                             
+                             (:file :emacs
+                              :depends-on (:daemon))
+
+                             (:file :screensaver
+                              :depends-on (:daemon))))))
 
