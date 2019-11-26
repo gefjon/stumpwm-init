@@ -15,6 +15,7 @@
      ,command))
 
 (defmacro super-key-maps (&rest variables-and-keys)
+  "for each (KEYMAP KEY) in VARIABLES-AND-KEYS, binds (s- KEY) to KEYMAP"
   (flet ((defvar-form (map-name)
            `(defvar ,map-name (stumpwm:make-sparse-keymap)))
          
@@ -35,7 +36,7 @@
 
 (defmacro windowed-app-launcher (program key &key (upcase-to-force t) command-line-args class)
   (check-type program symbol)
-  (let* ((program-name (string-downcase (symbol-name program)))
+  (let* ((program-name (symbol-to-downcase-string program))
          (normalized-key (norm-key key))
          (define-key-form `(s-l ,normalized-key ,program-name))
 
@@ -48,9 +49,27 @@
          (key-forms (if upcase-to-force (list define-key-form define-forced-form)
                         (list define-key-form)))
          (class (or class (string-capitalize program-name)))
-         (defcommand-form `(defcommand ,program () ()
-                             (stumpwm:run-or-raise ,command-line-command
-                                                   '(:class ,class)))))
+         (docstring
+           (format nil "causes `~a' to become active.
+
+switches to a window of class `~a' if one exists.
+otherwise, runs the shell command `~a'.
+prints a `STUMPWM:MESSAGE' before and after launching."
+                   program-name
+                   class
+                   command-line-command))
+         (before-message
+           (concatenate 'string "RUN-OR-RAISE " program-name))
+         (after-message
+           (concatenate 'string program-name " should be active"))
+         (defcommand-form
+           `(defcommand ,program () ()
+              ,docstring
+              (prog2
+                  (stumpwm:message ,before-message)
+                  (stumpwm:run-or-raise ,command-line-command
+                                        '(:class ,class))
+                (stumpwm:message ,after-message)))))
     `(progn
        ,defcommand-form
        ,@key-forms)))

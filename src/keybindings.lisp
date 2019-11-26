@@ -20,6 +20,7 @@
 (s- "B" "move-window-previous-frame")
 (s- ";" "colon")
 (s- ":" "eval")
+(s- "!" "exec")
 
 ;;; s-l
 (windowed-app-launcher firefox f)
@@ -28,7 +29,7 @@
 (windowed-app-launcher steam s)
 (windowed-app-launcher discord d)
 (windowed-app-launcher emacsclient e :command-line-args "-c"
-                                       :class "Emacs")
+                                     :class "Emacs")
 (windowed-app-launcher google-chrome c)
 (windowed-app-launcher xterm t)
 
