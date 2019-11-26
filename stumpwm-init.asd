@@ -14,8 +14,6 @@
 
                              (:file :keybinding-macros)
 
-                             (:file :colors)
-
                              (:file :theme
                                    :depends-on (:modules))
 
