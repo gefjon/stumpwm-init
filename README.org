@@ -13,40 +13,22 @@
    #+BEGIN_SRC sh
      git clone git@github.com:gefjon/stumpwm-contrib.git ~/stumpwm-contrib
    #+END_SRC
-** cl-base16
-   i use [[https://github.com/tpine/base16-stumpwm][stumpwm-base16]] to manage my themes. this is kinda overkill, since i
-   only use [[https://draculatheme.com/][dracula]], which i think already has themes for most of the apps i
-   use. but anyway, do:
-   #+BEGIN_SRC sh
-     git clone git@github.com:/tpine/cl-base16 ~/quicklisp/local-projects/cl-base16
-     git clone git@github.com:/tpine/base16-stumpwm ~/stumpwm-contrib/base16-stumpwm
-   #+END_SRC
-   then, start the following in its own ~sbcl~ process:
-   #+BEGIN_SRC lisp
-     (ql:quickload :cl-base16)
-     (cl-base16:update)
-   #+END_SRC
-   it will take a horrendously long time, because that tries to build every
-   theme for every base16 app. wait a moment for it to populate [[file:~/quicklisp/local-projects/cl-base16/sources/templates/list.yaml][the templates
-   file]], then interrupt it. go comment out all the apps except the ones you
-   plan to use, so your ~list.yaml~ includes only:
-   #+BEGIN_SRC yaml
-     emacs: https://github.com/belak/base16-emacs
-     stumpwm: https://github.com/tpine/base16-stumpwm
-     xresources: https://github.com/chriskempson/base16-xresources
-   #+END_SRC
-   then run ~(cl-base16:update)~ again.
-   #+BEGIN_SRC lisp
-     (load-module "stumpwm-base16")
-     (stumpwm-base16:load-theme "dracula")
-   #+END_SRC
+** theme
+   i use the colors defined by [[https://github.com/dracula/dracula-theme][dracula]]. i also use their themes for emacs and
+   xresources. i used to use [[https://github.com/chriskempson/base16][base16]] to manage my themes, but found it overkill;
+   i replaced it with a small macro called ~DEFTHEME~ (defined in
+   [[file:src/deftheme.lisp][deftheme.lisp]]); i pasted the dracula colors into [[file:src/dracula.lisp][a ~DEFTHEME~ form]], and then
+   selected them in [[file:src/theme.lisp][theme.lisp]].
 *** setting .Xresources
-    to install a theme for xresources (observed e.g. by xterm), symlink its
-    theme file to ~~/.Xresources~, like:
+    clone the dracula xresources repo:
     #+BEGIN_SRC sh
-      ln -s ~/quicklisp/local-projects/cl-base16/sources/templates/xresources/xresources/base16-dracula-256.Xresources ~/.Xresources
+      git clone https://github.com/dracula/xresources.git ~/dracula-xresources
     #+END_SRC
-    and load it with:
+    and symlink it in place:
+    #+BEGIN_SRC sh
+      ln -s ~/dracula-xresources/Xresources ~/.Xresources
+    #+END_SRC
+    load it into your current session:
     #+BEGIN_SRC sh
       xrdb --load ~/.Xresources
     #+END_SRC

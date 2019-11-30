@@ -14,8 +14,13 @@
 
                              (:file :keybinding-macros)
 
+                             (:file :deftheme)
+
+                             (:file :dracula
+                              :depends-on (:deftheme))
+                             
                              (:file :theme
-                                   :depends-on (:modules))
+                              :depends-on (:dracula))
 
                              (:file :modeline
                                     ;; set modeline after theme,
