@@ -6,6 +6,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun norm-key (key)
+    "normalize KEY into a string representing a key, downcasing symbols."
     (ctypecase key
       (string key)
       (symbol (symbol-to-downcase-string key)))))
@@ -15,8 +16,9 @@
      ,command))
 
 (defmacro super-key-maps (&rest variables-and-keys)
-  "for each (KEYMAP KEY) in VARIABLES-AND-KEYS, binds (s- KEY) to KEYMAP"
+  "for each (KEYMAP KEY) in VARIABLES-AND-KEYS, binds (s- KEY) to KEYMAP, and defines a function named s-KEY to bind keys within that keymap."
   (flet ((defvar-form (map-name)
+           ;; use `defvar' instead of `defparameter' so as not to clobber pre-defined keymaps
            `(defvar ,map-name (stumpwm:make-sparse-keymap)))
          
          (top-map-binding-form (key map-name)
@@ -35,6 +37,13 @@
                                    (defun-form key map-name)))))))
 
 (defmacro windowed-app-launcher (program key &key (upcase-to-force t) command-line-args class)
+  "defines a command PROGRAM which switches to PROGRAM, launching it if inactive, and binds it to s-l KEY.
+
+unless passed `nil' for upcase-to-force, also defines s-l (upcase KEY) to spawn a new instance of PROGRAM, bypassing switching to an existing process.
+
+COMMAND-LINE-ARGS is a string, passed to PROGRAM when launching.
+
+CLASS is a string, naming the window class to switch to if it exists."
   (check-type program symbol)
   (let* ((program-name (symbol-to-downcase-string program))
          (normalized-key (norm-key key))
