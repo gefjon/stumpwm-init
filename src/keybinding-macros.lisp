@@ -17,9 +17,11 @@
 
 (defmacro super-key-maps (&rest variables-and-keys)
   "for each (KEYMAP KEY) in VARIABLES-AND-KEYS, binds (s- KEY) to KEYMAP, and defines a function named s-KEY to bind keys within that keymap."
-  (flet ((defvar-form (map-name)
+  (flet ((defvar-form (map-name key)
            ;; use `defvar' instead of `defparameter' so as not to clobber pre-defined keymaps
-           `(defvar ,map-name (stumpwm:make-sparse-keymap)))
+           `(defvar ,map-name (stumpwm:make-sparse-keymap)
+              ,(or (documentation map-name 'variable)
+                   (format nil "keymap for s-~a" (norm-key key)))))
          
          (top-map-binding-form (key map-name)
            `(s- ,key ,map-name))
@@ -32,7 +34,7 @@
     
     (cons 'progn
           (iterate (for (map-name key) in variables-and-keys)
-                   (nconcing (list (defvar-form map-name)
+                   (nconcing (list (defvar-form map-name key)
                                    (top-map-binding-form key map-name)
                                    (defun-form key map-name)))))))
 
