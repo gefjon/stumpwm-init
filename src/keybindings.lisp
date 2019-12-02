@@ -30,14 +30,18 @@
 (s- "!" "exec")
 
 ;;; s-l
+;; a for alsamixer
+(windowed-app-launcher alsamixer a :xterm-wrapper t)
+;; f for firefox
 (windowed-app-launcher firefox f)
-(windowed-app-launcher wireshark w)
-(windowed-app-launcher spotify p)
-(windowed-app-launcher steam s)
-(windowed-app-launcher discord d)
+;; m for mail
+(windowed-app-launcher thunderbird m)
+;; e for emacs
 (windowed-app-launcher emacsclient e :command-line-args "-c"
                                      :class "Emacs")
+;; c for chrome
 (windowed-app-launcher google-chrome c)
+;; t for terminal
 (windowed-app-launcher xterm t)
 
 ;;; s-x

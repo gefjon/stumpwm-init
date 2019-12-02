@@ -38,20 +38,25 @@
                                    (top-map-binding-form key map-name)
                                    (defun-form key map-name)))))))
 
-(defmacro windowed-app-launcher (program key &key (upcase-to-force t) command-line-args class)
+(defmacro windowed-app-launcher (program key &key (upcase-to-force t) command-line-args class xterm-wrapper)
   "defines a command PROGRAM which switches to PROGRAM, launching it if inactive, and binds it to s-l KEY.
 
 unless passed `nil' for upcase-to-force, also defines s-l (upcase KEY) to spawn a new instance of PROGRAM, bypassing switching to an existing process.
 
 COMMAND-LINE-ARGS is a string, passed to PROGRAM when launching.
 
-CLASS is a string, naming the window class to switch to if it exists."
+CLASS is a string, naming the window class to switch to if it exists.
+
+if XTERM-WRAPPER is non-`nil', PROGRAM is a tui app, and will be invoked in xterm."
   (check-type program symbol)
   (let* ((program-name (symbol-to-downcase-string program))
          (normalized-key (norm-key key))
          (define-key-form `(s-l ,normalized-key ,program-name))
-
+         (class (or class (string-capitalize program-name)))
+         (xterm-string (if xterm-wrapper (format nil "xterm -class ~a -title ~a " class program-name)
+                           ""))
          (command-line-command  (concatenate 'string
+                                             xterm-string
                                              program-name
                                              " "
                                              command-line-args))
@@ -59,7 +64,6 @@ CLASS is a string, naming the window class to switch to if it exists."
                                 ,(concatenate 'string "exec " command-line-command)))
          (key-forms (if upcase-to-force (list define-key-form define-forced-form)
                         (list define-key-form)))
-         (class (or class (string-capitalize program-name)))
          (docstring
            (format nil "causes `~a' to become active.
 
