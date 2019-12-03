@@ -6,7 +6,8 @@
   :depends-on (:alexandria
                :iterate
                :stumpwm
-               :swank)
+               :swank
+               :clx-truetype)
   :components ((:file :package)
                (:module :src
                 :depends-on (:package)
