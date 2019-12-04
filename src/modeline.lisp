@@ -11,6 +11,14 @@
 (defparameter stumpwm:*time-modeline-string* "%a %e %b %k:%M:%S")
 (defparameter stumpwm:*time-format-string-default* "%a %e %b %Y %k:%M:%S")
 
+;; do not include %f, which formats frequency, because it depends on a
+;; field of /proc/cpuinfo which isn't present on my laptop.
+(defparameter cpu::*cpu-modeline-fmt* "%c @ %t %C"
+  "from left:
+%c usage percentage
+%t temperature
+%C usage bar graph")
+
 (defparameter *modeline-format-string*
   "%h | %M | %B | %C | %d | %g | %v"
   "left to right, these are:

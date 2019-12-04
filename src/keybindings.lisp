@@ -32,6 +32,8 @@
 ;;; s-l
 ;; a for alsamixer
 (windowed-app-launcher alsamixer a :xterm-wrapper t)
+;; w for wifi
+(windowed-app-launcher nmtui w :xterm-wrapper t)
 ;; f for firefox
 (windowed-app-launcher firefox f)
 ;; m for mail
