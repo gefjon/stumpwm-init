@@ -19,7 +19,7 @@
 %t temperature
 %C usage bar graph")
 
-(defparameter *modeline-format-string*
+(defparameter stumpwm:*screen-mode-line-format*
   "%h | %M | %B | %C | %d | %g | %v"
   "left to right, these are:
    %h hostname (supplied by `hostname')
@@ -33,4 +33,8 @@
 (stumpwm:enable-mode-line (stumpwm:current-screen)
                           (stumpwm:current-head)
                           t
-                          *modeline-format-string*)
+                          stumpwm:*screen-mode-line-format*)
+
+(defcommand toggle-mode-line () ()
+  (stumpwm:toggle-mode-line (stumpwm:current-screen)
+                            (stumpwm:current-head)))

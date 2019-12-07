@@ -4,6 +4,7 @@
 
 (super-key-maps (*s-x-map* x)
                 (*launcher-map* l)
+                (*emacs-map* e)
                 (stumpwm:*help-map* h)
                 (stumpwm:*root-map* t)
                 (stumpwm:*groups-map* g))
@@ -47,10 +48,18 @@
 (windowed-app-launcher xterm t)
 
 ;;; s-x
+;; k for kill (even tho stumpwm calls it "delete" sometimes)
 (s-x "k" "delete")
 (s-x "K" "kill")
+;; m for modeline
+(s-x "m" "toggle-mode-line")
 ;; these mimic emacs' C-x 0, C-x 1, C-x 2, and C-x 3
 (s-x "0" "remove-split")
 (s-x "1" "only")
 (s-x "2" "vsplit")
 (s-x "3" "hsplit")
+
+;;; s-e
+(s-e "c" "emacsclient-create-window")
+(s-e ";" "emacsclient-eval")
+(s-e "d" "debug")

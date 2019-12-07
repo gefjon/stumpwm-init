@@ -334,15 +334,3 @@
       overlayStderr:	True
       authWarningSlack:   20
     #+END_SRC
-** font
-   [[https://input.fontbureau.com/download/?customize&fontSelection=whole&a=0&g=0&i=serifs&l=serifs_round&zero=0&asterisk=0&braces=0&preset=default&line-height=1.2&accept=I+do&email=][download input]].
-   #+BEGIN_SRC sh
-     unzip Input_Font.zip
-   #+END_SRC
-   install:
-   #+BEGIN_SRC sh
-     for font in $(ls -d Input_Font/*/*/); do
-         cp $font ~/.fonts/
-     done
-     fc-cache -v -f
-   #+END_SRC

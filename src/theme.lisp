@@ -20,14 +20,6 @@
 (stumpwm:set-focus-color dracula:selection)
 (stumpwm:set-unfocus-color dracula:comment)
 
-(load-module "ttf-fonts")
-
-(when (null (clx-truetype:get-font-families))
-  ;; caching fonts is super slow, so only do it if there don't appear to be any fonts cached yet
-  (clx-truetype:cache-fonts))
-
-(stumpwm:set-font (make-instance 'xft:font :family "InputMono" :subfamily "Regular" :size 10))
-
 (defparameter stumpwm:*mode-line-foreground-color* dracula:foreground)
 (defparameter stumpwm:*mode-line-background-color* dracula:background)
 (defparameter stumpwm:*mode-line-border-color* dracula:current-line)
