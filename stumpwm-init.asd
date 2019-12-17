@@ -39,8 +39,5 @@
                              (:file :daemon)
                              
                              (:file :emacs
-                              :depends-on (:daemon))
-
-                             (:file :screensaver
                               :depends-on (:daemon))))))
 

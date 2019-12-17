@@ -2,8 +2,6 @@
 
 (defdaemon emacs --fg-daemon)
 
-(defvar *swank-port* 4005)
-
 (defcommand emacsclient-create-window (arg) ((:string "emacsclient -c "))
   (stumpwm:run-shell-command
    (concatenate 'string "emacsclient -c " arg)))
@@ -17,6 +15,9 @@
 (defun next-swank-port ()
   (incf *swank-port*))
 
-(defcommand debug (&optional (port (next-swank-port))) ()
+(defcommand emacsclient-debug (&optional (port (next-swank-port))) ()
   (swank:create-server :port port)
-  (emacsclient-eval (format nil "(slime-connect ~s ~a)" "localhost" port)))
+  (emacsclient-eval
+   (format nil
+           "(progn (slime-connect ~s ~a) (slime-repl-set-package ~a))"
+           "localhost" port :stumpwm-init)))

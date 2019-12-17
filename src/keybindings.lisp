@@ -46,13 +46,15 @@
 (windowed-app-launcher google-chrome c)
 ;; t for terminal
 (windowed-app-launcher xterm t)
+;; r for retroarch
+(windowed-app-launcher retroarch r)
 
 ;;; s-x
 ;; k for kill (even tho stumpwm calls it "delete" sometimes)
 (s-x "k" "delete")
 (s-x "K" "kill")
 ;; m for modeline
-(s-x "m" "toggle-mode-line")
+(s-x "m" "mode-line")
 ;; these mimic emacs' C-x 0, C-x 1, C-x 2, and C-x 3
 (s-x "0" "remove-split")
 (s-x "1" "only")
@@ -62,4 +64,4 @@
 ;;; s-e
 (s-e "c" "emacsclient-create-window")
 (s-e ";" "emacsclient-eval")
-(s-e "d" "debug")
+(s-e "d" "emacsclient-debug")

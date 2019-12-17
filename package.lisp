@@ -5,11 +5,10 @@
                 :defcommand)
   (:shadow :debug)
   (:export
-   :firefox
    :previous-frame :next-frame
    :move-window-next-frame :move-window-previous-frame
-   :google-chrome
    :emacsclient :emacsclient-eval :emacsclient-create-window :debug
-   :xterm :nmtui :alsamixer
+   :firefox :google-chrome
    :thunderbird
+   :xterm :nmtui :alsamixer
    :toggle-mode-line))

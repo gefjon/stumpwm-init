@@ -34,7 +34,3 @@
                           (stumpwm:current-head)
                           t
                           stumpwm:*screen-mode-line-format*)
-
-(defcommand toggle-mode-line () ()
-  (stumpwm:toggle-mode-line (stumpwm:current-screen)
-                            (stumpwm:current-head)))
