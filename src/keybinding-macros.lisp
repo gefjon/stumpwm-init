@@ -11,8 +11,12 @@
       (string key)
       (symbol (symbol-to-downcase-string key)))))
 
+(defmacro bind (key command)
+  `(stumpwm:define-key stumpwm:*top-map* (kbd ,(norm-key key))
+     ,command))
+
 (defmacro s- (key command)
-  `(stumpwm:define-key stumpwm:*top-map* (kbd ,(concatenate 'string "s-" (norm-key key)))
+  `(bind ,(concatenate 'string "s-" (norm-key key))
      ,command))
 
 (defmacro super-key-maps (&rest variables-and-keys)

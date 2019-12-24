@@ -65,3 +65,7 @@
 (s-e "c" "emacsclient-create-window")
 (s-e ";" "emacsclient-eval")
 (s-e "d" "emacsclient-debug")
+
+;;; multimedia keys
+(bind "XF86MonBrightnessUp" "brightness-10+")
+(bind "XF86MonBrightnessDown" "brightness-10-")

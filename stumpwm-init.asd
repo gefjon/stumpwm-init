@@ -33,11 +33,14 @@
                              (:file :frame-navigation)
 
                              (:file :keybindings
-                              :depends-on (:frame-navigation
-                                           :keybinding-macros))
+                              :depends-on (:keybinding-macros))
 
                              (:file :daemon)
                              
                              (:file :emacs
-                              :depends-on (:daemon))))))
+                              :depends-on (:daemon))
+
+                             (:file :misc)
+
+                             (:file :brightness)))))
 
