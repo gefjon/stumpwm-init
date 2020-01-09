@@ -35,10 +35,10 @@
                              (:file :keybindings
                               :depends-on (:keybinding-macros))
 
-                             (:file :daemon)
+                             (:file :systemd)
                              
                              (:file :emacs
-                              :depends-on (:daemon))
+                              :depends-on (:systemd))
 
                              (:file :misc)
 

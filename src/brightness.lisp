@@ -39,3 +39,6 @@
 
 (defcommand brightness-10- () ()
   (brightness-inc -10))
+
+(defcommand brightness-show () ()
+  (stumpwm:message "~d" (brightness-get)))

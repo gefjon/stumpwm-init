@@ -33,6 +33,8 @@
 ;;; s-l
 ;; a for alsamixer
 (windowed-app-launcher alsamixer a :xterm-wrapper t)
+;; p for pavucontrol
+(windowed-app-launcher pavucontrol p)
 ;; w for wifi
 (windowed-app-launcher nmtui w :xterm-wrapper t)
 ;; f for firefox
@@ -65,6 +67,7 @@
 (s-e "c" "emacsclient-create-window")
 (s-e ";" "emacsclient-eval")
 (s-e "d" "emacsclient-debug")
+(s-e "s" "emacs-status")
 
 ;;; multimedia keys
 (bind "XF86MonBrightnessUp" "brightness-10+")
