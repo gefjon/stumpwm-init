@@ -40,7 +40,7 @@
                              (:file :emacs
                               :depends-on (:systemd))
 
-                             (:file :misc)
+                             (:file :power-management)
 
                              (:file :brightness)))))
 
