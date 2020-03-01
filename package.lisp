@@ -1,5 +1,5 @@
-(cl:defpackage :stumpwm-init
-  (:use :cl :iterate)
+(uiop:define-package :stumpwm-init
+  (:mix :cl :iterate)
   (:import-from :stumpwm
                 :kbd
                 :defcommand)
