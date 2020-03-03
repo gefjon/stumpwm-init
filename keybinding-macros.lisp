@@ -1,4 +1,14 @@
-(cl:in-package :stumpwm-init)
+(uiop:define-package :stumpwm-init/keybinding-macros
+    (:mix :iterate :cl)
+  (:import-from :stumpwm
+   :defcommand :kbd)
+  (:export
+   :bind
+   :s-
+   :s-l
+   :super-key-maps
+   :windowed-app-launcher))
+(cl:in-package :stumpwm-init/keybinding-macros)
 
 (declaim (ftype (function (symbol) string) symbol-to-downcase-string))
 (defun symbol-to-downcase-string (symbol)
@@ -41,6 +51,8 @@
                    (nconcing (list (defvar-form map-name key)
                                    (top-map-binding-form key map-name)
                                    (defun-form key map-name)))))))
+
+(super-key-maps (*launcher-map* l))
 
 (defmacro windowed-app-launcher (program key &key (upcase-to-force t) command-line-args class xterm-wrapper)
   "defines a command PROGRAM which switches to PROGRAM, launching it if inactive, and binds it to s-l KEY.

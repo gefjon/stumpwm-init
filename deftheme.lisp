@@ -1,4 +1,7 @@
-(cl:in-package :stumpwm-init)
+(uiop:define-package :stumpwm-init/deftheme
+    (:mix :cl)
+  (:export :deftheme))
+(cl:in-package :stumpwm-init/deftheme)
 
 (defmacro defcolor (name value)
   (check-type name symbol)

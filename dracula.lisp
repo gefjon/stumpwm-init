@@ -1,4 +1,8 @@
-(cl:in-package :stumpwm-init)
+(uiop:define-package :stumpwm-init/dracula
+    (:mix :cl)
+  (:import-from :stumpwm-init/deftheme
+   :deftheme))
+(cl:in-package :stumpwm-init/dracula)
 
 (deftheme dracula
     (background "#282a36")

@@ -14,15 +14,20 @@
 (defcommand restart-emacs () ()
   (systemctl (--user restart emacs.service)))
 
-(defun collect-process-output-to-string (process)
+(defun collect-stream-to-string (stream)
   (with-output-to-string (s)
     (iter
-      (with stream = (sb-ext:process-output process))
       (for line = (read-line stream nil nil))
       (while line)
       (unless (first-time-p)
         (write-char #\newline s))
       (write-string line s))))
+
+(defun collect-process-output-to-string (process)
+  (collect-stream-to-string (sb-ext:process-output process)))
+
+(defun collect-process-error-to-string (process)
+  (collect-stream-to-string (sb-ext:process-error process)))
 
 (defun emacs-daemon-status ()
   (collect-process-output-to-string

@@ -1,4 +1,16 @@
-(in-package :stumpwm-init)
+(uiop:define-package :stumpwm-init/brightness
+    (:mix :cl)
+  (:export
+   :brightness-get
+   :brightness-set
+   :brightness-inc
+   :brightness
+   :brightness-10+
+   :brightness-10-
+   :brightness-show)
+  (:import-from :stumpwm
+   :defcommand :run-shell-command))
+(cl:in-package :stumpwm-init/brightness)
 
 (deftype brightness ()
   '(integer 0 255))

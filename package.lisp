@@ -1,14 +1,11 @@
-(uiop:define-package :stumpwm-init
-  (:mix :cl :iterate)
-  (:import-from :stumpwm
-                :kbd
-                :defcommand)
-  (:shadow :debug)
-  (:export
-   :previous-frame :next-frame
-   :move-window-next-frame :move-window-previous-frame
-   :emacsclient :emacsclient-eval :emacsclient-create-window :debug
-   :firefox :google-chrome
-   :thunderbird
-   :xterm :nmtui :alsamixer
-   :toggle-mode-line))
+(uiop:define-package :stumpwm-init/package
+    (:nicknames :stumpwm-init)
+  (:reexport
+   :stumpwm-init/dracula
+   :stumpwm-init/modeline
+   :stumpwm-init/frame-navigation
+   :stumpwm-init/keybindings
+   :stumpwm-init/systemd
+   :stumpwm-init/power-management
+   :stumpwm-init/brightness
+   :stumpwm-init/volume))

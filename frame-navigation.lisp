@@ -1,14 +1,20 @@
-(cl:in-package :stumpwm-init)
+(uiop:define-package :stumpwm-init/frame-navigation
+    (:mix :iterate :cl)
+  (:import-from :stumpwm
+   :defcommand)
+  (:export :next-frame :move-window-next-frame :previous-frame :move-window-previous-frame))
+(cl:in-package :stumpwm-init/frame-navigation)
 
 (defun find-successor (elt list &optional (test #'eq))
   "searches LIST for ELT, comparing by TEST, and returns the next one.
    returns NIL if ELT is not in LIST.
     wraps around to return (CAR LIST) if ELT is the last element of LIST."
   (check-type test function)
-  (iterate (for sublist on list)
-           (when (funcall test elt (first sublist))
-             (return (or (second sublist)
-                         (first list))))))
+  (iter
+    (for sublist on list)
+    (when (funcall test elt (first sublist))
+      (return-from find-successor (or (second sublist)
+                                             (first list))))))
 
 (defun advance-focus (&key bring-window go-backwards)
   (let* ((group (stumpwm:current-group))
