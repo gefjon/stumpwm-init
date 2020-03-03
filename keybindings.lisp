@@ -6,10 +6,10 @@
    :super-key-maps
    :windowed-app-launcher
    :s-
+   :s-l
    :bind)
   (:export
    :s-x
-   :s-l
    :s-e
    :s-h
    :s-t
@@ -28,7 +28,6 @@
 (set-prefix-key (kbd "s-F11"))
 
 (super-key-maps (*s-x-map* x)
-                (*launcher-map* l)
                 (*emacs-map* e)
                 (stumpwm:*help-map* h)
                 (stumpwm:*root-map* t)

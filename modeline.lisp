@@ -4,7 +4,7 @@
   (:import-from :hostname)
   (:import-from :mem)
   (:import-from :battery-portable)
-  (:import-from :stumpwm-init/dracula
+  (:import-from :stumpwm-init/theme
                 ; ensure this file is loaded after theme.lisp because
                 ; (for some deeply cursed reason) setting a theme
                 ; clobbers the modeline.

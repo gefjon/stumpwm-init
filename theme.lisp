@@ -1,9 +1,25 @@
+(uiop:define-package :stumpwm-init/theme
+    (:mix :cl)
+  (:import-from :stumpwm-init/dracula)
+  (:import-from :stumpwm
+   :*colors*
+   :set-fg-color
+   :set-bg-color
+   :set-border-color
+   :set-focus-color
+   :set-unfocus-color
+   :update-color-map
+   :current-screen
+   :*mode-line-foreground-color*
+   :*mode-line-background-color*
+   :*mode-line-border-color*
+   :run-shell-command))
 ;; ensure this file is loaded before modeline.lisp because otherwise
 ;; the modeline may not respect the colors bound below.
 
-(cl:in-package :stumpwm-init)
+(cl:in-package :stumpwm-init/theme)
 
-(defparameter stumpwm:*colors* (list dracula:background
+(defparameter *colors* (list dracula:background
                                      dracula:red
                                      dracula:green
                                      dracula:yellow
@@ -16,24 +32,24 @@
 
 ;;; message and input bar colors
 ;; `stumppwm:set-fg-color' controls the text in the message and input bar
-(stumpwm:set-fg-color dracula:foreground)
+(set-fg-color dracula:foreground)
 ;; `stumpwm:set-bg-color' controls the background in the message and input bar
-(stumpwm:set-bg-color dracula:background)
+(set-bg-color dracula:background)
 ;; `stumpwm:set-border-color' controls the border of the message and input bar
-(stumpwm:set-border-color dracula:comment)
+(set-border-color dracula:comment)
 
 ;;; window borders
 ;; `stumpwm:set-focus-color' applies to the border of the focused window
-(stumpwm:set-focus-color dracula:comment)
+(set-focus-color dracula:comment)
 ;; `stumpwm:set-unfocus-color' applies to the border of non-focused windows
-(stumpwm:set-unfocus-color dracula:background)
+(set-unfocus-color dracula:background)
 
-(stumpwm:update-color-map (stumpwm:current-screen))
+(update-color-map (stumpwm:current-screen))
 
-(defparameter stumpwm:*mode-line-foreground-color* dracula:foreground)
-(defparameter stumpwm:*mode-line-background-color* dracula:background)
-(defparameter stumpwm:*mode-line-border-color* dracula:current-line)
+(defparameter *mode-line-foreground-color* dracula:foreground)
+(defparameter *mode-line-background-color* dracula:background)
+(defparameter *mode-line-border-color* dracula:current-line)
 
-(stumpwm:run-shell-command "xrdb -load ~/.Xresources")
+(run-shell-command "xrdb -load ~/.Xresources")
 
-(stumpwm:run-shell-command (format nil "xsetroot -solid ~s" dracula:background))
+(run-shell-command (format nil "xsetroot -solid ~s" dracula:background))

@@ -5,7 +5,7 @@
   (:export :systemctl))
 (cl:in-package :stumpwm-init/systemd)
 
-(defmacro systemctl ((&rest args) &key collect-output)
+(defmacro systemctl (&rest args)
   `(sb-ext:run-program "systemctl" ',(mapcar #'downcase args)
                        :search t
                        :external-format :utf-8
