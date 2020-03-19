@@ -5,18 +5,20 @@
    :brightness-set
    :brightness-inc
    :brightness
-   :brightness-10+
-   :brightness-10-
+   :brightness-500+
+   :brightness-100+
+   :brightness-500-
+   :brightness-100-
    :brightness-show)
   (:import-from :stumpwm
    :defcommand :run-shell-command))
 (cl:in-package :stumpwm-init/brightness)
 
 (deftype brightness ()
-  '(integer 0 255))
+  'unsigned-byte)
 
 (deftype brightness-delta ()
-  '(integer -256 255))
+  'signed-byte)
 
 (declaim (ftype (function () brightness)
                 brightness-get))
@@ -46,11 +48,17 @@
   (check-type delta brightness-delta)
   (brightness-inc delta))
 
-(defcommand brightness-10+ () ()
-  (brightness-inc 10))
+(defcommand brightness-500+ () ()
+  (brightness-inc 500))
 
-(defcommand brightness-10- () ()
-  (brightness-inc -10))
+(defcommand brightness-100+ () ()
+  (brightness-inc 100))
+
+(defcommand brightness-500- () ()
+  (brightness-inc -500))
+
+(defcommand brightness-100- () ()
+  (brightness-inc -100))
 
 (defcommand brightness-show () ()
   (stumpwm:message "~d" (brightness-get)))

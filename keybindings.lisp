@@ -94,5 +94,7 @@
 (s-e "s" "emacs-status")
 
 ;;; multimedia keys
-(bind "XF86MonBrightnessUp" "brightness-10+")
-(bind "XF86MonBrightnessDown" "brightness-10-")
+(bind "XF86MonBrightnessUp" "brightness-500+")
+(bind "S-XF86MonBrightnessUp" "brightness-100+")
+(bind "XF86MonBrightnessDown" "brightness-500-")
+(bind "S-XF86MonBrightnessDown" "brightness-100-")
