@@ -20,15 +20,15 @@
 (cl:in-package :stumpwm-init/theme)
 
 (defparameter *colors* (list dracula:background
-                                     dracula:red
-                                     dracula:green
-                                     dracula:yellow
-                                     dracula:comment
-                                     dracula:pink
-                                     dracula:cyan
-                                     dracula:foreground
-                                     dracula:selection
-                                     dracula:purple))
+                             dracula:red
+                             dracula:green
+                             dracula:yellow
+                             dracula:comment
+                             dracula:pink
+                             dracula:cyan
+                             dracula:foreground
+                             dracula:selection
+                             dracula:purple))
 
 ;;; message and input bar colors
 ;; `stumppwm:set-fg-color' controls the text in the message and input bar
@@ -37,6 +37,8 @@
 (set-bg-color dracula:background)
 ;; `stumpwm:set-border-color' controls the border of the message and input bar
 (set-border-color dracula:comment)
+
+(run-shell-command (format nil "xsetroot -solid ~s" dracula:background))
 
 ;;; window borders
 ;; `stumpwm:set-focus-color' applies to the border of the focused window
