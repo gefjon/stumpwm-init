@@ -64,11 +64,11 @@ CLASS is a string, naming the window class to switch to if it exists.
 
 if XTERM-WRAPPER is non-`nil', PROGRAM is a tui app, and will be invoked in xterm."
   (check-type program symbol)
-  (let* ((program-name (symbol-to-downcase-string program))
+  (let* ((program-name (symbol-to-downcase-string command))
          (normalized-key (norm-key key))
          (define-key-form `(s-l ,normalized-key ,program-name))
          (class (or class (string-capitalize program-name)))
-         (xterm-string (if xterm-wrapper (format nil "xterm -class ~a -title ~a " class program-name)
+         (xterm-string (if xterm-wrapper (format nil "uxterm -class ~a -title ~a " class program-name)
                            ""))
          (command-line-command  (concatenate 'string
                                              xterm-string

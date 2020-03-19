@@ -71,7 +71,7 @@
 ;; c for chrome
 (windowed-app-launcher google-chrome c)
 ;; t for terminal
-(windowed-app-launcher xterm t)
+(windowed-app-launcher uxterm t)
 ;; r for retroarch
 (windowed-app-launcher retroarch r)
 
