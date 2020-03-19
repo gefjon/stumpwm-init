@@ -98,3 +98,6 @@
 (bind "S-XF86MonBrightnessUp" "brightness-100+")
 (bind "XF86MonBrightnessDown" "brightness-500-")
 (bind "S-XF86MonBrightnessDown" "brightness-100-")
+
+(bind "XF86AudioRaiseVolume" "volume-10+")
+(bind "XF86AudioLowerVolume" "volume-10-")

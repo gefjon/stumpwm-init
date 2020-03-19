@@ -1,43 +1,77 @@
 (uiop:define-package :stumpwm-init/volume
     (:mix :cl)
-  (:export :adjust-volume :set-volume :toggle-mute :mute :unmute)
+  (:export :adjust-volume :set-volume :toggle-mute :mute :unmute :volume-10+ :volume-10-)
+  (:import-from :gefjon-utils
+   :|:| :->)
+  (:import-from :stumpwm-init/shell-command
+   :collect-process-output-to-string :collect-process-error-to-string)
   (:import-from :stumpwm
-   :defcommand))
+   :defcommand :message))
 (cl:in-package :stumpwm-init/volume)
 
-(defvar *audio-sink* 1
-  "the sink used for audio output in pulseaudio.
+(|:| #'pamixer (-> (&rest string) string))
+(defun pamixer (&rest args)
+  (let* ((process (sb-ext:run-program "pamixer" args
+                                     :search t
+                                     :wait t
+                                     :output :stream
+                                     :error :stream
+                                     :input nil))
+         (output (collect-process-output-to-string process))
+         (error (collect-process-error-to-string process)))
+    (if (> (length error) 0)
+        error
+        output)))
 
-on my laptop, sink 0 is hdmi and sink 1 is the speakers or headphones.")
+(|:| #'show-volume (-> () (values &optional)))
+(defcommand show-volume () ()
+  (message "~a" (pamixer "--get-volume-human"))
+  (values))
 
-(defun sink-string ()
-  (prin1-to-string *audio-sink*))
+(|:| #'increase-volume (-> ((integer 0 100)) string))
+(defun increase-volume (delta)
+  (pamixer "--increase" (prin1-to-string delta)))
+(|:| #'decrease-volume (-> ((integer 0 100)) string))
+(defun decrease-volume (delta)
+  (pamixer "--decrease" (prin1-to-string delta)))
 
-(defun pactl (subcommand &rest args)
-  (sb-ext:run-program "pactl" (cons subcommand args)
-                      :search t
-                      :wait t
-                      :output nil
-                      :error nil
-                      :input nil))
-
+(|:| #'adjust-volume (-> ((integer -100 100)) (values &optional)))
 (defcommand adjust-volume (delta) ((:number "volume delta (%): "))
   "increase or decrease system volume by DELTA
 
 DELTA should be an integer representing a positive or negative percentage."
-  (pactl "set-sink-volume" (sink-string) (format nil "~@d%" delta)))
+  (if (< delta 0)
+      (decrease-volume (abs delta))
+      (increase-volume delta))
+  (show-volume))
 
+(|:| #'set-volume (-> ((integer 0 100)) (values &optional)))
 (defcommand set-volume (target) ((:number "absolute volume (%): "))
   "set system volume to TARGET
 
 TARGET should be a non-negative integer representing a percentage."
-  (pactl "set-sink-volume" (sink-string) (prin1-to-string target)))
+  (pamixer "--set-volume" (prin1-to-string target))
+  (show-volume))
 
+(|:| #'toggle-mute (-> () (values &optional)))
 (defcommand toggle-mute () ()
-  (pactl "set-sink-mute" (sink-string) "toggle"))
+  (pamixer "--toggle-mute")
+  (show-volume))
 
+(|:| #'mute (-> () (values &optional)))
 (defcommand mute () ()
-  (pactl "set-sink-mute" (sink-string) "1"))
+  (pamixer "--mute")
+  (show-volume))
 
+(|:| #'unmute (-> () (values &optional)))
 (defcommand unmute () ()
-  (pactl "set-sink-mute" (sink-string) "0"))
+  (pamixer "--unmute")
+  (show-volume))
+
+(|:| #'volume-10+ (-> () (values &optional)))
+(defcommand volume-10+ () ()
+  (adjust-volume 10))
+
+(|:| #'volume-10- (-> () (values &optional)))
+(defcommand volume-10- () ()
+  (adjust-volume -10))
