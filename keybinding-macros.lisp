@@ -10,11 +10,10 @@
    :windowed-app-launcher))
 (cl:in-package :stumpwm-init/keybinding-macros)
 
-(declaim (ftype (function (symbol) string) symbol-to-downcase-string))
-(defun symbol-to-downcase-string (symbol)
-  (string-downcase (symbol-name symbol)))
-
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  (declaim (ftype (function (symbol) string) symbol-to-downcase-string))
+  (defun symbol-to-downcase-string (symbol)
+    (string-downcase (symbol-name symbol)))
   (defun norm-key (key)
     "normalize KEY into a string representing a key, downcasing symbols."
     (ctypecase key
