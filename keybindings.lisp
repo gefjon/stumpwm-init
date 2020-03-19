@@ -21,7 +21,7 @@
    :thunderbird
    :emacsclient
    :google-chrome
-   :xterm
+   :uxterm
    :retroarch))
 (cl:in-package :stumpwm-init/keybindings)
 
