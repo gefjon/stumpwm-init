@@ -30,7 +30,7 @@
     #+END_SRC
     load it into your current session:
     #+BEGIN_SRC sh
-      xrdb --load ~/.Xresources
+      xrdb -load ~/.Xresources
     #+END_SRC
     once that works, it goes into your userinit, like:
     #+BEGIN_SRC lisp
