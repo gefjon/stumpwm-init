@@ -36,6 +36,12 @@
     #+BEGIN_SRC lisp
       (stumpwm:run-shell-command "xrdb -load ~/.Xresources")
     #+END_SRC
+*** background
+    setting the background uses ~xsetroot~, which for some reason isn't
+    preinstalled on manjaro. install it with:
+    #+BEGIN_SRC sh
+      sudo pacman -Syu xorg-xsetroot
+    #+END_SRC
 ** emacs daemon
    i'm back to using systemd to run emacs. this time, my [[file:~/emacs/etc/emacs.service][emacs.service]] is:
    #+BEGIN_SRC conf
@@ -68,6 +74,6 @@
    i use ~brightnessctl~ to manage my laptop's screen brightness. to install
    it:
    #+BEGIN_SRC sh
-     sudo apt install brightnessctl brightness-udev
+     sudo pacman -Syu brightnessctl
    #+END_SRC
    you'll need to reboot to make the ~udev~ rules take effect.
