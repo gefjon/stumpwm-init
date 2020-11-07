@@ -101,3 +101,4 @@
 
 (bind "XF86AudioRaiseVolume" "volume-10+")
 (bind "XF86AudioLowerVolume" "volume-10-")
+(bind "XF86AudioMute" "toggle-mute")

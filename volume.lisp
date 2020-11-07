@@ -28,14 +28,14 @@
   (message "~a" (pamixer "--get-volume-human"))
   (values))
 
-(|:| #'increase-volume (-> ((integer 0 100)) string))
+(|:| #'increase-volume (-> (unsigned-byte) string))
 (defun increase-volume (delta)
-  (pamixer "--increase" (prin1-to-string delta)))
-(|:| #'decrease-volume (-> ((integer 0 100)) string))
+  (pamixer "--increase" (prin1-to-string delta) "--allow-boost"))
+(|:| #'decrease-volume (-> (unsigned-byte) string))
 (defun decrease-volume (delta)
-  (pamixer "--decrease" (prin1-to-string delta)))
+  (pamixer "--decrease" (prin1-to-string delta) "--allow-boost"))
 
-(|:| #'adjust-volume (-> ((integer -100 100)) (values &optional)))
+(|:| #'adjust-volume (-> (integer) (values &optional)))
 (defcommand adjust-volume (delta) ((:number "volume delta (%): "))
   "increase or decrease system volume by DELTA
 
@@ -45,12 +45,12 @@ DELTA should be an integer representing a positive or negative percentage."
       (increase-volume delta))
   (show-volume))
 
-(|:| #'set-volume (-> ((integer 0 100)) (values &optional)))
+(|:| #'set-volume (-> (unsigned-byte) (values &optional)))
 (defcommand set-volume (target) ((:number "absolute volume (%): "))
   "set system volume to TARGET
 
 TARGET should be a non-negative integer representing a percentage."
-  (pamixer "--set-volume" (prin1-to-string target))
+  (pamixer "--set-volume" (prin1-to-string target) "--allow-boost")
   (show-volume))
 
 (|:| #'toggle-mute (-> () (values &optional)))
