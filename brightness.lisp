@@ -44,21 +44,22 @@
                                      (sign-of delta)))
   (values))
 
-(defcommand brightness (delta) ((:number "brightness delta: "))
-  (check-type delta brightness-delta)
-  (brightness-inc delta))
-
-(defcommand brightness-500+ () ()
-  (brightness-inc 500))
-
-(defcommand brightness-100+ () ()
-  (brightness-inc 100))
-
-(defcommand brightness-500- () ()
-  (brightness-inc -500))
-
-(defcommand brightness-100- () ()
-  (brightness-inc -100))
-
 (defcommand brightness-show () ()
   (stumpwm:message "~d" (brightness-get)))
+
+(defcommand brightness (delta) ((:number "brightness delta: "))
+  (check-type delta brightness-delta)
+  (brightness-inc delta)
+  (brightness-show))
+
+(defcommand brightness-500+ () ()
+  (brightness 500))
+
+(defcommand brightness-100+ () ()
+  (brightness 100))
+
+(defcommand brightness-500- () ()
+  (brightness -500))
+
+(defcommand brightness-100- () ()
+  (brightness -100))
