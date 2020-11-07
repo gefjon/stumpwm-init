@@ -6,7 +6,7 @@
    :collect-process-output-to-string)
   (:import-from :stumpwm-init/systemd
    :systemctl)
-  (:import-from :swank)
+  (:import-from :slynk)
   (:export
    :emacsclient-create-window
    :emacsclient-eval
@@ -37,14 +37,14 @@
 (defcommand emacs-status () ()
   (stumpwm:message "~a" (emacs-daemon-status)))
 
-(defvar *swank-port* 49152 "the port to use for swank")
+(defvar *slynk-port* 49152 "the port to use for slynk")
 
-(defun next-swank-port ()
-  (incf *swank-port*))
+(defun next-slynk-port ()
+  (incf *slynk-port*))
 
-(defun elisp-slime-connect-form (port &optional (host "localhost"))
-  (format nil "(slime-connect ~s ~a)" host port))
+(defun elisp-sly-connect-form (port &optional (host "localhost"))
+  (format nil "(sly-connect ~s ~a)" host port))
 
-(defcommand emacsclient-debug (&optional (port (next-swank-port))) ()
-  (swank:create-server :port port)
-  (emacsclient-eval (elisp-slime-connect-form port)))
+(defcommand emacsclient-debug (&optional (port (next-slynk-port))) ()
+  (slynk:create-server :port port)
+  (emacsclient-eval (elisp-sly-connect-form port)))
