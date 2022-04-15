@@ -1,3 +1,4 @@
+
 * phoebe's super sexy stumpwm config
   my configuration for [[https://stumpwm.github.io][stumpwm]], my window manager of choice.
 
@@ -7,12 +8,6 @@
   mkdir -p ~/.stumpwm.d
   ln -s ~/quicklisp/local-projects/stumpwm-init/init.lisp ~/.stumpwm.d/init.lisp
   #+END_SRC
-** contrib
-   i have [[https://github.com/gefjon/stumpwm-contrib][a fork]] of the [[https://github.com/stumpwm/stumpwm-contrib][stumpwm contrib modules]]. to install them such that this
-   configuration can find them, do:
-   #+BEGIN_SRC sh
-     git clone git@github.com:gefjon/stumpwm-contrib.git ~/quicklisp/local-projects/stumpwm-contrib
-   #+END_SRC
 ** theme
    i use the colors defined by [[https://github.com/dracula/dracula-theme][dracula]]. i also use their themes for emacs and
    xresources. i used to use [[https://github.com/chriskempson/base16][base16]] to manage my themes, but found it overkill;
@@ -77,10 +72,3 @@
      sudo pacman -Syu brightnessctl
    #+END_SRC
    you'll need to reboot to make the ~udev~ rules take effect.
-** sly & slynk for debugging
-   this config depends on [[https://github.com/joaotavora/sly][slynk]] to connect to a emacs with sly. unfortunately, slynk is
-   not in quicklisp. the path of least resistance is to clone the sly repo into
-   [[file:~/quicklisp/local-projects/][local-projects]]:
-   #+begin_src sh
-     git clone git@github.com:joaotavora/sly ~/quicklisp/local-projects/sly
-   #+end_src

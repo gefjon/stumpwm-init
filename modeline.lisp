@@ -16,11 +16,8 @@
 
 ;; do not include %f, which formats frequency, because it depends on a
 ;; field of /proc/cpuinfo which isn't present on my laptop.
-(defparameter cpu::*cpu-modeline-fmt* "%c @ %t %C"
-  "from left:
-%c usage percentage
-%t temperature
-%C usage bar graph")
+(defparameter cpu::*cpu-modeline-fmt* "%c"
+  "just usage percentage")
 
 (defparameter stumpwm:*screen-mode-line-format*
   "%h | %M | %B | %C | %d | %g | %v"
@@ -28,7 +25,7 @@
    %h hostname (supplied by `hostname')
    %M memory usage (supplied by `mem')
    %B battery (supplied by `battery-portable')
-   %c cpu usage (supplied by `cpu')
+   %C cpu usage (supplied by `cpu')
    %d date and time
    %g groups (virtual desktops)
    %v windows")
