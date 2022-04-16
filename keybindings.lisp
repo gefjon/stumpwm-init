@@ -2,6 +2,7 @@
     (:mix :cl)
   (:import-from :stumpwm
    :set-prefix-key :kbd)
+  (:import-from :stumpwm-init/volume)
   (:import-from :stumpwm-init/keybinding-macros
    :super-key-maps
    :windowed-app-launcher
