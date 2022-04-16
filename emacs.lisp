@@ -1,19 +1,19 @@
 (uiop:define-package :stumpwm-init/emacs
-    (:mix :cl)
+  (:mix :cl)
   (:import-from :stumpwm
-   :defcommand)
+   #:defcommand)
   (:import-from :stumpwm-init/shell-command
-   :collect-process-output-to-string)
+   #:collect-process-output-to-string)
   (:import-from :stumpwm-init/systemd
-   :systemctl)
+   #:systemctl)
   (:import-from :slynk)
   (:export
-   :emacsclient-create-window
-   :emacsclient-eval
-   :kill-emacs
-   :restart-emacs
-   :emacs-status
-   :emacsclient-debug))
+   #:emacsclient-create-window
+   #:emacsclient-eval
+   #:kill-emacs
+   #:restart-emacs
+   #:emacs-status
+   #:emacsclient-debug))
 (cl:in-package :stumpwm-init/emacs)
 
 (defcommand emacsclient-create-window (arg) ((:string "emacsclient -c "))
