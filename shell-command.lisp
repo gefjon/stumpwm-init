@@ -8,16 +8,11 @@
    #:collect-process-error-to-string))
 (cl:in-package :stumpwm-init/shell-command)
 
-(defun coerce-string (symbol-or-string)
-         (etypecase symbol-or-string
-           (symbol (symbol-name symbol-or-string))
-           (string symbol-or-string)))
-
 (defun upcase (symbol-or-string)
-  (string-upcase (coerce-string symbol-or-string)))
+  (string-upcase (string symbol-or-string)))
 
 (defun downcase (symbol-or-string)
-  (string-downcase (coerce-string symbol-or-string)))
+  (string-downcase (string symbol-or-string)))
 
 (defun collect-stream-to-string (stream)
   (with-output-to-string (s)
