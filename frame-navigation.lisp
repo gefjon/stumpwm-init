@@ -10,7 +10,7 @@
    returns NIL if ELT is not in LIST.
     wraps around to return (CAR LIST) if ELT is the last element of LIST."
   (check-type test function)
-  (iter
+  (iter (declare (declare-variables))
     (for sublist on list)
     (when (funcall test elt (first sublist))
       (return-from find-successor (or (second sublist)
