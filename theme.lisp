@@ -1,19 +1,19 @@
 (uiop:define-package :stumpwm-init/theme
-    (:mix :cl)
+  (:use :cl)
   (:import-from :stumpwm-init/dracula)
   (:import-from :stumpwm
-   :*colors*
-   :set-fg-color
-   :set-bg-color
-   :set-border-color
-   :set-focus-color
-   :set-unfocus-color
-   :update-color-map
-   :current-screen
-   :*mode-line-foreground-color*
-   :*mode-line-background-color*
-   :*mode-line-border-color*
-   :run-shell-command))
+   #:*colors*
+   #:set-fg-color
+   #:set-bg-color
+   #:set-border-color
+   #:set-focus-color
+   #:set-unfocus-color
+   #:update-color-map
+   #:current-screen
+   #:*mode-line-foreground-color*
+   #:*mode-line-background-color*
+   #:*mode-line-border-color*
+   #:run-shell-command))
 ;; ensure this file is loaded before modeline.lisp because otherwise
 ;; the modeline may not respect the colors bound below.
 
@@ -46,7 +46,7 @@
 ;; `stumpwm:set-unfocus-color' applies to the border of non-focused windows
 (set-unfocus-color dracula:background)
 
-(update-color-map (stumpwm:current-screen))
+(update-color-map (current-screen))
 
 (defparameter *mode-line-foreground-color* dracula:foreground)
 (defparameter *mode-line-background-color* dracula:background)

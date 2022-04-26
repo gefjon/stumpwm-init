@@ -1,8 +1,8 @@
 (uiop:define-package :stumpwm-init/frame-navigation
-    (:mix :iterate :cl)
+  (:use :iterate :cl)
   (:import-from :stumpwm
-   :defcommand)
-  (:export :next-frame :move-window-next-frame :previous-frame :move-window-previous-frame))
+   #:defcommand)
+  (:export #:next-frame #:move-window-next-frame #:previous-frame #:move-window-previous-frame))
 (cl:in-package :stumpwm-init/frame-navigation)
 
 (defun find-successor (elt list &optional (test #'eq))

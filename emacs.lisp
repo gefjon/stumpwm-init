@@ -1,5 +1,5 @@
 (uiop:define-package :stumpwm-init/emacs
-  (:mix :cl)
+  (:use :cl)
   (:import-from :stumpwm
    #:defcommand)
   (:import-from :stumpwm-init/shell-command
@@ -13,7 +13,7 @@
    #:kill-emacs
    #:restart-emacs
    #:emacs-status
-   #:emacsclient-debug))
+   #:emacsclient-debug #:slynk))
 (cl:in-package :stumpwm-init/emacs)
 
 (defcommand emacsclient-create-window (arg) ((:string "emacsclient -c "))

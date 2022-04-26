@@ -1,11 +1,11 @@
 (uiop:define-package :stumpwm-init/shell-command
-    (:mix :iterate :cl)
+  (:use :iterate :cl)
   (:export
-   :upcase
-   :downcase
-   :collect-stream-to-string
-   :collect-process-output-to-string
-   :collect-process-error-to-string))
+   #:upcase
+   #:downcase
+   #:collect-stream-to-string
+   #:collect-process-output-to-string
+   #:collect-process-error-to-string))
 (cl:in-package :stumpwm-init/shell-command)
 
 (defun coerce-string (symbol-or-string)

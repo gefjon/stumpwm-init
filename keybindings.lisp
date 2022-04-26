@@ -1,29 +1,29 @@
 (uiop:define-package :stumpwm-init/keybindings
-    (:mix :cl)
+  (:use :cl)
   (:import-from :stumpwm
-   :set-prefix-key :kbd)
+   #:set-prefix-key #:kbd)
   (:import-from :stumpwm-init/volume)
   (:import-from :stumpwm-init/keybinding-macros
-   :super-key-maps
-   :windowed-app-launcher
-   :s-
-   :s-l
-   :bind)
+   #:super-key-maps
+   #:windowed-app-launcher
+   #:s-
+   #:s-l
+   #:bind)
   (:export
-   :s-x
-   :s-e
-   :s-h
-   :s-t
-   :s-g
-   :alsamixer
-   :pavucontrol
-   :nmtui
-   :firefox
-   :thunderbird
-   :emacsclient
-   :google-chrome
-   :uxterm
-   :retroarch))
+   #:s-x
+   #:s-e
+   #:s-h
+   #:s-t
+   #:s-g
+   #:alsamixer
+   #:pavucontrol
+   #:nmtui
+   #:firefox
+   #:thunderbird
+   #:emacsclient
+   #:google-chrome
+   #:uxterm
+   #:retroarch))
 (cl:in-package :stumpwm-init/keybindings)
 
 (set-prefix-key (kbd "s-F11"))

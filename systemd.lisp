@@ -1,8 +1,8 @@
 (uiop:define-package :stumpwm-init/systemd
-    (:mix :cl)
+  (:use :cl)
   (:import-from :stumpwm-init/shell-command
-   :downcase)
-  (:export :systemctl))
+   #:downcase)
+  (:export #:systemctl))
 (cl:in-package :stumpwm-init/systemd)
 
 (defmacro systemctl (&rest args)

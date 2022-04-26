@@ -1,10 +1,10 @@
 (uiop:define-package :stumpwm-init/volume
-    (:mix :cl)
-  (:export :adjust-volume :set-volume :toggle-mute :mute :unmute :volume-10+ :volume-10-)
+  (:use :cl)
+  (:export #:adjust-volume #:set-volume #:toggle-mute #:mute #:unmute #:volume-10+ #:volume-10-)
   (:import-from :stumpwm-init/shell-command
-   :collect-process-output-to-string :collect-process-error-to-string)
+   #:collect-process-output-to-string #:collect-process-error-to-string)
   (:import-from :stumpwm
-   :defcommand :message))
+   #:defcommand #:message))
 (cl:in-package :stumpwm-init/volume)
 
 (declaim (ftype (function (&rest string) (values string &optional))

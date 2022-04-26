@@ -1,6 +1,6 @@
 (uiop:define-package :stumpwm-init/package
-    (:nicknames :stumpwm-init)
-  (:reexport
+  (:nicknames :stumpwm-init)
+  (:use-reexport
    :stumpwm-init/theme
    :stumpwm-init/modeline
    :stumpwm-init/frame-navigation

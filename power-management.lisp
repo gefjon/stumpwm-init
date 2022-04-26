@@ -1,8 +1,8 @@
 (uiop:define-package :stumpwm-init/power-management
-    (:mix :cl)
+  (:use :cl)
   (:import-from :stumpwm
-   :defcommand
-   :run-shell-command))
+   #:defcommand
+   #:run-shell-command))
 (in-package :stumpwm-init/power-management)
 
 (defcommand reboot () ()

@@ -1,14 +1,16 @@
 (uiop:define-package :stumpwm-init/modeline
-    (:mix :cl)
+  (:use :cl)
+
+  ;; non-importing dependencies
   (:import-from :cpu)
   (:import-from :hostname)
   (:import-from :mem)
   (:import-from :battery-portable)
-  (:import-from :stumpwm-init/theme
-                ; ensure this file is loaded after theme.lisp because
-                ; (for some deeply cursed reason) setting a theme
-                ; clobbers the modeline.
-                ))
+  (:import-from :stumpwm)
+
+  ;; ensure this file is loaded after theme.lisp because (for some
+  ;; deeply cursed reason) setting a theme clobbers the modeline.
+  (:import-from :stumpwm-init/theme))
 (cl:in-package :stumpwm-init/modeline)
 
 (defparameter stumpwm:*time-modeline-string* "%a %e %b %k:%M:%S")
