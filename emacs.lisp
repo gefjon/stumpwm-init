@@ -48,3 +48,6 @@
 (defcommand emacsclient-debug (&optional (port (next-slynk-port))) ()
   (slynk:create-server :port port)
   (emacsclient-eval (elisp-sly-connect-form port)))
+
+(defcommand slynk (&optional (port (next-slynk-port))) ()
+  (emacsclient-debug port))
