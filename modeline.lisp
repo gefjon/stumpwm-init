@@ -1,5 +1,5 @@
 (uiop:define-package :stumpwm-init/modeline
-  (:use :cl)
+  (:use :cl :iterate)
 
   ;; non-importing dependencies
   (:import-from :cpu)
@@ -13,6 +13,55 @@
   (:import-from :stumpwm-init/theme)
   (:export #:enable-mode-lines))
 (cl:in-package :stumpwm-init/modeline)
+
+(defun make-ringbuffer (capacity &key (element-type t) (initial-element 0))
+  (make-array capacity
+              :element-type element-type
+              :initial-element initial-element
+              :fill-pointer 0))
+
+(declaim (inline ringbuffer-push))
+(defun ringbuffer-push (rb new-elt)
+  (when (= (fill-pointer rb) (array-dimension rb 0))
+    (setf (fill-pointer rb) 0))
+  (vector-push new-elt rb))
+
+(declaim (type (and (vector fixnum) (not simple-array))
+               async-mode-line-timings))
+(sb-ext:defglobal async-mode-line-timings
+    (make-ringbuffer 128 :element-type 'fixnum))
+
+(defun call-with-async-mode-line-timing (thunk)
+  (let* ((start-time (get-internal-real-time))
+         (ret (multiple-value-list (funcall thunk)))
+         (end-time (get-internal-real-time))
+         (elapsed-time (max (- end-time start-time) 0)))
+    (ringbuffer-push async-mode-line-timings elapsed-time)
+    (values-list ret)))
+
+(defmacro with-async-mode-line-timing (&body body)
+  `(call-with-async-mode-line-timing (lambda () ,@body)))
+
+(declaim (ftype (function () (values fixnum &optional))
+                total-recent-async-mode-line-times))
+(defun total-recent-async-mode-line-times ()
+  (iter (declare (declare-variables))
+    (for idx from 0 below (array-dimension async-mode-line-timings 0))
+    (for timing = (aref async-mode-line-timings idx))
+    (summing timing into total)
+    (declare (fixnum total))
+    (finally (return total))))
+
+(defun average-async-mode-line-time-ms ()
+  (* (/ (coerce (total-recent-async-mode-line-times) 'double-float)
+        (coerce internal-time-units-per-second 'double-float)
+        (coerce (array-dimension async-mode-line-timings 0) 'double-float))
+     1000f0))
+
+(defun format-average-async-mode-line-time (ml)
+  (declare (ignore ml))
+  (format nil "ml: ~4f ms" (average-async-mode-line-time-ms)))
+(stumpwm:add-screen-mode-line-formatter #\a 'format-average-async-mode-line-time)
 
 (sb-ext:defglobal async-mode-line-update-thread nil)
 
@@ -52,8 +101,9 @@
       (redraw-async-mode-line ml))))
 
 (defun async-mode-line-update-loop ()
-  (loop (update-async-mode-lines)
-        (sb-thread:thread-yield)))
+  (loop (with-async-mode-line-timing
+          (update-async-mode-lines)
+          (sb-thread:thread-yield))))
 
 (defun kill-async-mode-line-update-thread ()
   (when (thread-running-p async-mode-line-update-thread)
@@ -87,7 +137,7 @@
   "just usage percentage")
 
 (defparameter stumpwm:*screen-mode-line-format*
-  "%h | %M | %B | %C | %d | %g | %v"
+  "%h | %M | %B | %C | %d | %g | %a | %v"
   "left to right, these are:
    %h hostname (supplied by `hostname')
    %M memory usage (supplied by `mem')
@@ -95,6 +145,7 @@
    %C cpu usage (supplied by `cpu')
    %d date and time
    %g groups (virtual desktops)
+   %a async-mode-line timings
    %v windows")
 
 (stumpwm:defcommand enable-all-mode-lines () ()
