@@ -10,7 +10,8 @@
 
   ;; ensure this file is loaded after theme.lisp because (for some
   ;; deeply cursed reason) setting a theme clobbers the modeline.
-  (:import-from :stumpwm-init/theme))
+  (:import-from :stumpwm-init/theme)
+  (:export #:enable-mode-lines))
 (cl:in-package :stumpwm-init/modeline)
 
 (defparameter stumpwm:*time-modeline-string* "%a %e %b %k:%M:%S")
@@ -32,7 +33,12 @@
    %g groups (virtual desktops)
    %v windows")
 
-(stumpwm:enable-mode-line (stumpwm:current-screen)
-                          (stumpwm:current-head)
-                          t
-                          stumpwm:*screen-mode-line-format*)
+(stumpwm:defcommand enable-all-mode-lines () ()
+  (dolist (screen stumpwm:*screen-list*)
+    (dolist (head (stumpwm:screen-heads screen))
+      (stumpwm:enable-mode-line screen
+                                head
+                                t
+                                stumpwm:*screen-mode-line-format*))))
+
+(stumpwm:add-hook stumpwm:*start-hook* 'enable-all-mode-lines)

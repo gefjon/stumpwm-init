@@ -30,28 +30,28 @@
                              dracula:selection
                              dracula:purple))
 
-;;; message and input bar colors
-;; `stumppwm:set-fg-color' controls the text in the message and input bar
-(set-fg-color dracula:foreground)
-;; `stumpwm:set-bg-color' controls the background in the message and input bar
-(set-bg-color dracula:background)
-;; `stumpwm:set-border-color' controls the border of the message and input bar
-(set-border-color dracula:comment)
-
-(run-shell-command (format nil "xsetroot -solid ~s" dracula:background))
-
-;;; window borders
-;; `stumpwm:set-focus-color' applies to the border of the focused window
-(set-focus-color dracula:comment)
-;; `stumpwm:set-unfocus-color' applies to the border of non-focused windows
-(set-unfocus-color dracula:background)
-
-(update-color-map (current-screen))
-
 (defparameter *mode-line-foreground-color* dracula:foreground)
 (defparameter *mode-line-background-color* dracula:background)
 (defparameter *mode-line-border-color* dracula:current-line)
 
-(run-shell-command "xrdb -load ~/.Xresources")
+(defun set-theme ()
+  ;;; message and input bar colors
+  ;; `stumppwm:set-fg-color' controls the text in the message and input bar
+  (set-fg-color dracula:foreground)
+  ;; `stumpwm:set-bg-color' controls the background in the message and input bar
+  (set-bg-color dracula:background)
+  ;; `stumpwm:set-border-color' controls the border of the message and input bar
+  (set-border-color dracula:comment)
 
-(run-shell-command (format nil "xsetroot -solid ~s" dracula:background))
+  ;;; window borders
+  ;; `stumpwm:set-focus-color' applies to the border of the focused window
+  (set-focus-color dracula:comment)
+  ;; `stumpwm:set-unfocus-color' applies to the border of non-focused windows
+  (set-unfocus-color dracula:background)
+
+  (dolist (screen stumpwm:*screen-list*)
+    (update-color-map screen))
+  (run-shell-command "xrdb -load ~/.Xresources")
+  (run-shell-command (format nil "xsetroot -solid ~s" dracula:background)))
+
+(stumpwm:add-hook stumpwm:*start-hook* 'set-theme)
