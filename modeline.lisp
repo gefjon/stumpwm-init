@@ -15,7 +15,6 @@
 (cl:in-package :stumpwm-init/modeline)
 
 (sb-ext:defglobal async-mode-line-update-thread nil)
-(sb-ext:defglobal async-mode-line-format-contents (make-hash-table :test #'equal))
 
 (defun thread-running-p (thread)
   (and thread (sb-thread:thread-alive-p thread)))
@@ -31,18 +30,12 @@
                        (class-name (class-of e))
                        e))))
 
-(defun get-mode-line-format (ml &aux (format-string (stumpwm::mode-line-format ml)))
-  (multiple-value-bind (val presentp) (gethash format-string async-mode-line-format-contents)
-    (if (and presentp val) val
-        (setf (gethash format-string async-mode-line-format-contents)
-              (try-formatting-mode-line ml)))))
-
 (defun invalidate-mode-line-formats ()
   (clrhash async-mode-line-format-contents))
 
 (defun redraw-async-mode-line (ml &optional force)
   "Copied from `stumpwm::redraw-mode-line', but without testing the mode-line-mode"
-  (let* ((string (get-mode-line-format ml)))
+  (let* ((string (try-formatting-mode-line ml)))
     (when (or force (not (string= (stumpwm::mode-line-contents ml) string)))
       (setf (stumpwm::mode-line-contents ml) string)
       (stumpwm::resize-mode-line ml)
