@@ -11,56 +11,62 @@
   ;; ensure this file is loaded after theme.lisp because (for some
   ;; deeply cursed reason) setting a theme clobbers the modeline.
   (:import-from :stumpwm-init/theme)
-  (:export #:enable-mode-lines))
+  (:export #:enable-mode-lines #:modeline-reset-timings))
 (cl:in-package :stumpwm-init/modeline)
 
-(defun make-ringbuffer (capacity &key (element-type t) (initial-element 0))
-  (make-array capacity
-              :element-type element-type
-              :initial-element initial-element
-              :fill-pointer 0))
+(eval-when (:compile-toplevel :load-toplevel)
+  (defstruct running-average
+    (avg 0d0 :type double-float)
+    (samples 0 :type fixnum)))
 
-(declaim (inline ringbuffer-push))
-(defun ringbuffer-push (rb new-elt)
-  (when (= (fill-pointer rb) (array-dimension rb 0))
-    (setf (fill-pointer rb) 0))
-  (vector-push new-elt rb))
+(declaim (type running-average
+               async-mode-line-real-time
+               async-mode-line-run-time))
+(sb-ext:defglobal async-mode-line-real-time
+    (make-running-average))
+(sb-ext:defglobal async-mode-line-run-time
+    (make-running-average))
 
-(declaim (type (and (vector fixnum) (not simple-array))
-               async-mode-line-timings))
-(sb-ext:defglobal async-mode-line-timings
-    (make-ringbuffer 128 :element-type 'fixnum))
+(declaim (ftype (function (running-average double-float) (values double-float &optional))
+                record-sample))
+(defun record-sample (avg sample)
+  (let* ((old-average (running-average-avg avg))
+         (old-samples (running-average-samples avg)))
+    (setf (running-average-avg avg)
+          (/ (+ (* old-average old-samples) sample)
+             (incf (running-average-samples avg))))))
+
+(stumpwm:defcommand modeline-reset-timings () ()
+  ;; cons new objects and overwrite rather than updating objects in-place to preserve atomicity
+  (setf async-mode-line-real-time (make-running-average)
+        async-mode-line-run-time (make-running-average)))
+
+(declaim (ftype (function (fixnum) (values double-float &optional))
+                internal-time-ms))
+(defun internal-time-ms (internal-time)
+  (/ (* internal-time 1000d0)
+     internal-time-units-per-second))
 
 (defun call-with-async-mode-line-timing (thunk)
-  (let* ((start-time (get-internal-real-time))
+  (let* ((start-real-time (get-internal-real-time))
+         (start-run-time (get-internal-run-time))
          (ret (multiple-value-list (funcall thunk)))
-         (end-time (get-internal-real-time))
-         (elapsed-time (max (- end-time start-time) 0)))
-    (ringbuffer-push async-mode-line-timings elapsed-time)
+         (end-real-time (get-internal-real-time))
+         (end-run-time (get-internal-run-time))
+         (elapsed-real-time (internal-time-ms (max (- end-real-time start-real-time) 0)))
+         (elapsed-run-time (internal-time-ms (max (- end-run-time start-run-time) 0))))
+    (record-sample async-mode-line-real-time elapsed-real-time)
+    (record-sample async-mode-line-run-time elapsed-run-time)
     (values-list ret)))
 
 (defmacro with-async-mode-line-timing (&body body)
   `(call-with-async-mode-line-timing (lambda () ,@body)))
 
-(declaim (ftype (function () (values fixnum &optional))
-                total-recent-async-mode-line-times))
-(defun total-recent-async-mode-line-times ()
-  (iter (declare (declare-variables))
-    (for idx from 0 below (array-dimension async-mode-line-timings 0))
-    (for timing = (aref async-mode-line-timings idx))
-    (summing timing into total)
-    (declare (fixnum total))
-    (finally (return total))))
-
-(defun average-async-mode-line-time-ms ()
-  (* (/ (coerce (total-recent-async-mode-line-times) 'double-float)
-        (coerce internal-time-units-per-second 'double-float)
-        (coerce (array-dimension async-mode-line-timings 0) 'double-float))
-     1000f0))
-
 (defun format-average-async-mode-line-time (ml)
   (declare (ignore ml))
-  (format nil "ml: ~4f ms" (average-async-mode-line-time-ms)))
+  (format nil "ml: ~5,2f ms real ~5,2f ms run"
+          (running-average-avg async-mode-line-real-time)
+          (running-average-avg async-mode-line-run-time)))
 (stumpwm:add-screen-mode-line-formatter #\a 'format-average-async-mode-line-time)
 
 (sb-ext:defglobal async-mode-line-update-thread nil)
@@ -79,9 +85,6 @@
                        (class-name (class-of e))
                        e))))
 
-(defun invalidate-mode-line-formats ()
-  (clrhash async-mode-line-format-contents))
-
 (defun redraw-async-mode-line (ml &optional force)
   "Copied from `stumpwm::redraw-mode-line', but without testing the mode-line-mode"
   (let* ((string (try-formatting-mode-line ml)))
@@ -95,15 +98,14 @@
                                ()))))
 
 (defun update-async-mode-lines ()
-  (invalidate-mode-line-formats)
   (dolist (ml stumpwm::*mode-lines*)
     (when (eq (stumpwm::mode-line-mode ml) :async)
       (redraw-async-mode-line ml))))
 
 (defun async-mode-line-update-loop ()
   (loop (with-async-mode-line-timing
-          (update-async-mode-lines)
-          (sb-thread:thread-yield))))
+          (update-async-mode-lines))
+        (sb-thread:thread-yield)))
 
 (defun kill-async-mode-line-update-thread ()
   (when (thread-running-p async-mode-line-update-thread)
@@ -128,6 +130,8 @@
           (stumpwm::mode-line-mode modeline) :async)
     modeline))
 
+(defparameter *hostname* (hostname::fmt-hostname nil))
+
 (defparameter stumpwm:*time-modeline-string* "%a %e %b %k:%M:%S")
 (defparameter stumpwm:*time-format-string-default* "%a %e %b %Y %k:%M:%S")
 
@@ -137,13 +141,14 @@
   "just usage percentage")
 
 (defparameter stumpwm:*screen-mode-line-format*
-  "%h | %M | %B | %C | %d | %g | %a | %v"
+  (format nil "~a | %M | %B | %C | %d | %g | %a | %v" *hostname*)
+  ;; (format nil "~a | %B | %C | %d | %g | %a | %v" *hostname*)
   "left to right, these are:
-   %h hostname (supplied by `hostname')
-   %M memory usage (supplied by `mem')
-   %B battery (supplied by `battery-portable')
-   %C cpu usage (supplied by `cpu')
-   %d date and time
+   memoized hostname, provided by `hostname'
+   %M memory usage (supplied by `mem') (reads procfs)
+   %B battery (supplied by `battery-portable') (reads procfs)
+   %C cpu usage (supplied by `cpu') (reads procfs)
+   %d date and time (uses posix `time')
    %g groups (virtual desktops)
    %a async-mode-line timings
    %v windows")
