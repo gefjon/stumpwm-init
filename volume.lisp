@@ -65,25 +65,25 @@
 (defmacro mixer-case (&body clauses)
   (flet ((transform-clause (clause)
            (destructuring-bind (mixer &body then) clause
-             `(cons ',mixer (lambda () ,@then)))))
+             `(cons ',mixer (lambda () (,mixer ,@then))))))
     `(call-mixer-program-case (list ,@(mapcar #'transform-clause clauses)))))
 
 (defcommand show-volume () ()
   (message "~a" (mixer-case
-                  (pamixer (pamixer "--get-volume-human"))
-                  (pulsemixer (pulsemixer "--get-volume"))))
+                  (pamixer "--get-volume-human")
+                  (pulsemixer "--get-volume")))
   (values))
 
 (declaim (ftype (function (unsigned-byte) (values string &optional))
                  increase-volume decrease-volume))
 (defun increase-volume (delta)
   (mixer-case 
-    (pamixer (pamixer "--increase" (prin1-to-string delta) "--allow-boost"))
-    (pulsemixer (pulsemixer "--change-volume" (concatenate 'string "+" (prin1-to-string delta))))))
+    (pamixer "--increase" (prin1-to-string delta) "--allow-boost")
+    (pulsemixer "--change-volume" (concatenate 'string "+" (prin1-to-string delta)))))
 (defun decrease-volume (delta)
   (mixer-case 
-    (pamixer (pamixer "--decrease" (prin1-to-string delta) "--allow-boost"))
-    (pulsemixer (pulsemixer "--change-volume" (concatenate 'string "-" (prin1-to-string delta))))))
+    (pamixer "--decrease" (prin1-to-string delta) "--allow-boost")
+    (pulsemixer "--change-volume" (concatenate 'string "-" (prin1-to-string delta)))))
 
 (defcommand adjust-volume (delta) ((:number "volume delta (%): "))
   "increase or decrease system volume by DELTA
@@ -99,26 +99,26 @@ DELTA should be an integer representing a positive or negative percentage."
 
 TARGET should be a non-negative integer representing a percentage."
   (mixer-case
-    (pamixer (pamixer "--set-volume" (prin1-to-string target) "--allow-boost"))
-    (pulsemixer (pulsemixer "--set-volume" (prin1-to-string target))))
+    (pamixer "--set-volume" (prin1-to-string target) "--allow-boost")
+    (pulsemixer "--set-volume" (prin1-to-string target)))
   (show-volume))
 
 (defcommand toggle-mute () ()
   (mixer-case
-    (pamixer (pamixer "--toggle-mute"))
-    (pulsemixer (pulsemixer "--toggle-mute")))
+    (pamixer "--toggle-mute")
+    (pulsemixer "--toggle-mute"))
   (show-volume))
 
 (defcommand mute () ()
   (mixer-case 
-    (pamixer (pamixer "--mute"))
-    (pulsemixer (pulsemixer "--mute")))
+    (pamixer "--mute")
+    (pulsemixer "--mute"))
   (show-volume))
 
 (defcommand unmute () ()
   (mixer-case
-    (pamixer (pamixer "--unmute"))
-    (pulsemixer (pulsemixer "--unmute")))
+    (pamixer "--unmute")
+    (pulsemixer "--unmute"))
   (show-volume))
 
 (defcommand volume-10+ () ()
